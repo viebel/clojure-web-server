@@ -1,0 +1,22 @@
+<configuration>
+  <!-- prevent per-message overhead for jul logging calls, e.g. Hornet -->
+  <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+    <resetJUL>true</resetJUL>
+  </contextListener>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- Eclipse shit (noisy datomic client) -->
+  <logger name="org.eclipse" level="INFO" />
+
+  <!-- Netty shit -->
+  <logger name="io.netty" level="INFO" />
+
+  <root level="debug">
+    <appender-ref ref="STDOUT" />
+  </root>
+</configuration>
