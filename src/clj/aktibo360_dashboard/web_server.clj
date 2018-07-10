@@ -14,8 +14,10 @@
    [cognitect.transit          :as transit]
    [aktibo360-dashboard.db     :as db])
   (:import
-    [java.util UUID]
-    [java.io ByteArrayOutputStream]))
+    [java.util UUID Date]
+    [java.io ByteArrayOutputStream]
+    [java.time Instant LocalDate ZoneId]
+    [java.time.format DateTimeFormatter]))
 
 
 ;; ===========================================================================
@@ -35,6 +37,45 @@
 
 (defn admin? [identity]
   (boolean (get-in identity [:user :admin])))
+
+(defn compat-user-report-dates [db user-id]
+  (let [curr-db      (db/curr-db db)
+        applications (db/all-user-application-ids curr-db user-id)]
+    (sort-by first
+             (mapcat (fn [application-id]
+                       (map (fn [date]
+                              [date application-id])
+                            (db/re-calculate-event-dates curr-db user-id application-id)))
+                     applications))))
+
+(defn compat-user-report-dates2 [db user-id]
+  (let [curr-db (db/curr-db db)]
+    (sort-by first
+             (mapcat (fn [[application-id dates]]
+                       (map (fn [date]
+                              [date application-id])
+                            dates))
+                     (db/compat-re-calculate-event-dates curr-db user-id)))))
+
+(defn compat-user-events [db user-id start end application-id]
+  (let [curr-db (db/curr-db db)]
+    (db/user-event-objects curr-db user-id start end)))
+
+(defn compat-users [db]
+  (let [curr-db (db/curr-db db)]
+    (map (fn [[id email]]
+           {:id    id
+            :email email})
+         (db/users curr-db))))
+
+(def utc-basic-date-formatter (DateTimeFormatter/ofPattern "uuuu-MM-dd"))
+
+(defn parse-date [s]
+  (-> s LocalDate/parse (.atStartOfDay (ZoneId/of "UTC")) .toInstant Date/from))
+
+(defn compat-timeline [db user-id application-id date adjust-tz?]
+  (let [curr-db (db/curr-db db)]
+    (db/timeline curr-db user-id application-id date adjust-tz?)))
 
 ;; ===========================================================================
 ;; handlers
@@ -264,6 +305,39 @@
 
 (defn list-event-dates-handler [_])
 
+(defn admin-compat-user-report-dates-handler [{:keys [identity ::db data]}]
+  (if (admin? identity)
+    (http/ok (ser/encode
+              (compat-user-report-dates db (:user-id data))
+              :transit+json)
+             {:content-type "application/transit+json"})
+    (http/unauthorized "you're not an admin")))
+
+(defn admin-compat-user-events-handler [{:keys [identity ::db data]}]
+  (if (admin? identity)
+    (http/ok (ser/encode
+              (compat-user-events db (:user-id data) (:start data) (:end data) (:application-id data))
+              :transit+json)
+             {:content-type "application/transit+json"})
+    (http/unauthorized "No soup for you!")))
+
+(defn admin-compat-users-handler [{:keys [identity ::db]}]
+  (if (admin? identity)
+    (http/ok (ser/encode (compat-users db) :transit+json)
+             {:content-type "application/transit+json"})
+    (http/unauthorized "No soup for you!")))
+
+(defn admin-compat-timeline-handler [{:keys [identity ::db route-params query-params]}]
+  (if (admin? identity)
+    (http/ok (ser/encode (compat-timeline db
+                                          (Long/parseLong (:user route-params) 10)
+                                          (:application-id query-params)
+                                          (parse-date (:date route-params))
+                                          true)
+                         :transit+json)
+             {:content-type "application/transit+json"})
+    (http/unauthorized "No soup for you!")))
+
 ;; ===========================================================================
 ;; routes
 
@@ -284,9 +358,14 @@
                           {:failed? true :cause cause}))}))]
    [:any (parse/body-params)]
    [:get "1/applications" list-applications-handler]
-   [:get "1/event-dates/application" list-event-dates-handler]
+   [:get "1/event-dates/:application" list-event-dates-handler]
    [:prefix "admin"
-    [:get "1/applications/:user" admin-list-applications-handler]]])
+    [:get "1/applications/:user" admin-list-applications-handler]
+    [:prefix "compat"
+     [:get "1/users" admin-compat-users-handler]
+     [:post "1/user-events" admin-compat-user-events-handler]
+     [:post "1/user-report-dates" admin-compat-user-report-dates-handler]
+     [:get "1/timeline/:user/:date" admin-compat-timeline-handler]]]])
 
 #_(defn ws-routes []
   [:prefix "ws"

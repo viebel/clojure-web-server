@@ -11,7 +11,7 @@
 ;; REPL workflow
 
 (def dev-config
-  {:web-server {:port 8084 :secret "whatever"}
+  {:web-server {:port 8085 :secret "whatever"}
    :db         {:cfg     {:server-type :peer-server
                           :access-key  "foo"
                           :secret      "bar"
