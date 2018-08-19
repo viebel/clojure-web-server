@@ -1,4 +1,4 @@
-# aktibo360-dashboard
+# Clojure Web Server
 
 FIXME: description
 
@@ -10,7 +10,7 @@ Download from http://example.com/FIXME.
 
 FIXME: explanation
 
-    $ java -jar aktibo360-dashboard-0.1.0-standalone.jar [args]
+    $ java -jar clojure-web-server-0.1.0-standalone.jar [args]
 
 ## Options
 

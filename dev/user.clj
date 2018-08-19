@@ -5,19 +5,18 @@
     [clojure.tools.namespace.repl :refer [refresh]]
     [com.stuartsierra.component   :as component]
     [clojure.tools.logging        :as log]
-    [aktibo360-dashboard.system   :refer [new-system]]))
+    [clojure-web-server.system   :refer [new-system]]))
 
 ;; ===========================================================================
 ;; REPL workflow
 
 (def dev-config
-  {:web-server {:port 8085 :secret "whatever"}
-   :db         {:cfg     {:server-type :peer-server
+  {:web-server {:port 8086 }
+   #_:db         #_{:cfg     {:server-type :peer-server
                           :access-key  "foo"
                           :secret      "bar"
                           :endpoint    "localhost:9999"}
-                :db-name "aktibo360"}
-   :geocoding  {:api-key "AIzaSyD6f9jsZWIhC-7oYImknZIf1fUDA34nrc8"}})
+                :db-name "clojure-web-server"}})
 
 (def system nil)
 
@@ -46,3 +45,6 @@
 (defn reset []
   (stop)
   (refresh :after 'user/go))
+
+
+

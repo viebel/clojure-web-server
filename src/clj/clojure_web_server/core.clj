@@ -1,7 +1,7 @@
-(ns aktibo360-dashboard.core
+(ns clojure-web-server.core
   (:gen-class))
 
 (defn -main
   "I don't do a whole lot ... yet."
-  [& args]
+  [& _]
   (println "Hello, World!"))

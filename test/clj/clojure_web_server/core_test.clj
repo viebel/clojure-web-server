@@ -1,6 +1,6 @@
-(ns aktibo360-dashboard.core-test
+(ns clojure-web-server.core-test
   (:require [clojure.test :refer :all]
-            [aktibo360-dashboard.core :refer :all]))
+            [clojure-web-server.core :refer :all]))
 
 (deftest a-test
   (testing "FIXME, I fail."
