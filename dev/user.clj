@@ -13,10 +13,10 @@
 (def dev-config
   {:web-server {:port 8086 }
    #_:db         #_{:cfg     {:server-type :peer-server
-                          :access-key  "foo"
-                          :secret      "bar"
-                          :endpoint    "localhost:9999"}
-                :db-name "clojure-web-server"}})
+                              :access-key  "foo"
+                              :secret      "bar"
+                              :endpoint    "localhost:9999"}
+                    :db-name "clojure-web-server"}})
 
 (def system nil)
 

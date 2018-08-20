@@ -24,7 +24,7 @@
     (log/debug {:context context :outcome outcome})))
 
 (defn status-handler [_]
-  (http/ok "ok you"))
+  (http/ok "ok you are the best"))
 
 ;; ===========================================================================
 ;; routes

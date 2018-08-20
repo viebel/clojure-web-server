@@ -1,36 +1,29 @@
 # Clojure Web Server
 
-FIXME: description
+A demo of a Catacumba web server buit with components.
 
 ## Installation
 
-Download from http://example.com/FIXME.
+~~~bash
+lein deps
+~~~
 
-## Usage
+## Run locally
 
-FIXME: explanation
+~~~bash
+lein run -m clojure-web-server.core
+~~~
 
-    $ java -jar clojure-web-server-0.1.0-standalone.jar [args]
+## Run locally inside a REPL
+~~~bash
+lein repl
+user => (go)
+~~~
 
-## Options
+## Run as a jar
 
-FIXME: listing of options this app accepts.
+~~~bash
+lein uberjar
+java -jar target/uberjar/clojure-web-server-standalone.jar
+~~~
 
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
-
-## License
-
-Copyright © 2018 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
