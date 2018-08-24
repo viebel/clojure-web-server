@@ -17,6 +17,7 @@
                        :main ^:skip-aot clojure-web-server.core
                        :dependencies [[org.clojure/tools.nrepl "0.2.13"]]}
              :dev     {:dependencies [[org.clojure/tools.namespace "0.3.0-alpha4"]]
+                       :jvm-opts ["-Dclojure.server.repl={:port 5555 :accept clojure.core.server/repl}"] 
                        :source-paths ["dev"]}}
 
   :repl-options {:init-ns          user
