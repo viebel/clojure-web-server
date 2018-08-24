@@ -1,10 +1,7 @@
 (ns user
   (:require
-    [clojure.repl                 :refer [doc source]]
-    [clojure.pprint               :refer [pprint]]
     [clojure.tools.namespace.repl :refer [refresh]]
     [com.stuartsierra.component   :as component]
-    [clojure.tools.logging        :as log]
     [clojure-web-server.system   :refer [new-system]]))
 
 ;; ===========================================================================
@@ -12,11 +9,7 @@
 
 (def dev-config
   {:web-server {:port 8086 }
-   #_:db         #_{:cfg     {:server-type :peer-server
-                              :access-key  "foo"
-                              :secret      "bar"
-                              :endpoint    "localhost:9999"}
-                    :db-name "clojure-web-server"}})
+   :mongo {:uri "mongodb://127.0.0.1:27017/clojure-web-server"}})
 
 (def system nil)
 

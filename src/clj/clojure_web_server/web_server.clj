@@ -1,75 +1,65 @@
 (ns clojure-web-server.web-server
   (:require
-   [com.stuartsierra.component :as component]
-   [clojure.tools.logging      :as log]
-   [catacumba.core             :as ct]
-   [catacumba.http             :as http]
-   [catacumba.handlers.parse   :as parse]
-   [catacumba.handlers.misc    :as misc]
-   [clojure-web-server.db     :as db]))
+    [com.stuartsierra.component :as component]
+    [gadjett.core :refer [dbg]]
+    [catacumba.core :as ct]
+    [catacumba.http :as http]
+    [catacumba.handlers.parse :as parse]
+    [clojure-web-server.db :refer [users] :as db]
+    [cheshire.core :as json]))
 
 
-;; ===========================================================================
-;; utils
+(defn http-json-ok [data]
+  (-> (json/encode data)
+      (http/ok {:content-type "application/json"})))
 
 
-;; ===========================================================================
-;; handlers
+(defn hello-world [req]
+  (dbg req)
+  (http/ok "liron"))
 
-(defn hello-world [_]
-  (http/ok "hello world"))
+(defn get-users [{:keys [::db] :as req}]
+  (dbg req)
+  (http-json-ok (dbg (users db)))
+  (http/ok "foo"))
 
-(defn logging-handler [context outcome]
-  (when-not (= "/status" (:path context))
-    (log/debug {:context context :outcome outcome})))
-
-(defn status-handler [_]
-  (http/ok "ok you are the best"))
-
-;; ===========================================================================
-;; routes
+(defn add-user! [{:keys [::db data]}]
+  (db/add-user! db (:username (dbg data)))
+  (http/ok "user added"))
 
 (defn api-routes []
-  [:any (misc/cors
-          {:origin            #{"*"}
-           :max-age           22896000
-           :allow-credentials true
-           :allow-headers     [:content-type :authorization]})]
-  [:any (parse/body-params)]
-  [:get "hello" hello-world])
+  [[:any (parse/body-params)]
+   [:get "hello" #'hello-world]
+   [:get "users" #'get-users]
+   [:post "user" #'add-user!]])
 
 
-;; ===========================================================================
-;; component
-
-(defrecord WebServer [port secret db]
-
+(defrecord WebServer [port mongo-db]
   component/Lifecycle
 
   (start [component]
-    (log/infof ";; starting WebServer on port [%d]" port)
-    (let [routes [[:any (misc/log logging-handler)]
-                  [:get "status" status-handler]
-                  (api-routes)]]
+    (println ";; starting WebServer on port [%d]" port)
+    (let [routes (concat [[:any (fn [_] (ct/delegate {::db mongo-db}))]]
+                         (api-routes))]
       (assoc component :server (ct/run-server (ct/routes routes)
-                                              {:port          port
-                                               :host          "0.0.0.0"
-                                               :debug         false
-                                               :max-body-size 20971520}))))
+                                              {:port  port
+                                               :host  "0.0.0.0"
+                                               :debug true}))))
 
   (stop [component]
-    (log/info ";; stopping WebServer")
+    (println ";; stopping WebServer")
     (when-let [server (:server component)]
-      (try
-        (.stop server)
-        (catch Throwable ex
-          (log/error ex "failed to stop server"))))
+      (.stop server))
     (dissoc component :server)))
-
-;; ===========================================================================
-;; constructor
 
 (defn new-web-server [config]
   (component/using
-   (map->WebServer (select-keys config [:port]))
-   []))
+   (map->WebServer config)
+   [:mongo-db]))
+
+(comment
+  (def server (component/start (new-web-server {:port 3129})))
+  (component/stop server)
+
+
+  )

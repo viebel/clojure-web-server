@@ -2,7 +2,10 @@
   :dependencies [[org.clojure/clojure            "1.9.0"]
                  [org.clojure/tools.logging      "0.4.1"]
                  [com.stuartsierra/component     "0.3.2"]
-                 [funcool/catacumba              "2.2.1" :exclusions [com.google.guava ]]
+                 [viebel/gadjett "0.5.2"]
+                 [com.google.guava/guava "19.0"]
+                 [com.novemberain/monger "3.1.0"]
+                 [funcool/catacumba "2.2.1"]
                  [ch.qos.logback/logback-classic "1.2.3"]]
 
   :target-path "target/%s"
