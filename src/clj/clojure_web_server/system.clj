@@ -7,7 +7,7 @@
 
 
 (def config
-  {:web-server {:port 5555}
+  {:web-server {:port 8089}
    :mongo {:uri "mongodb://localhost:27017/foo"}})
 
 

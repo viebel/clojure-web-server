@@ -15,13 +15,10 @@
 
 
 (defn hello-world [req]
-  (dbg req)
-  (http/ok "liron"))
+  (http/ok "hello"))
 
 (defn get-users [{:keys [::db] :as req}]
-  (dbg req)
-  (http-json-ok (dbg (users db)))
-  (http/ok "foo"))
+  (http-json-ok (users db)))
 
 (defn add-user! [{:keys [::db data]}]
   (db/add-user! db (:username (dbg data)))

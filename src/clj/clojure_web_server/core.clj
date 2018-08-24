@@ -8,7 +8,8 @@
 
 
 (def config
-  {:web-server {:port 8087 }})
+  {:web-server {:port 8087 }
+   :mongo {:uri "mongodb://127.0.0.1:27017/clojure-web-server"}})
 
 (defn -main
   "I don't do a whole lot ... yet."

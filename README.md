@@ -7,12 +7,39 @@ A demo of a Catacumba web server buit with components.
 ~~~bash
 lein deps
 ~~~
-p
+
 ## Run locally
 
 ~~~bash
 lein run -m clojure-web-server.core
 ~~~
+
+If it went well, you should be able to query the server 
+
+~~~bash
+curl http://localhost:8087/hello
+hello
+~~~
+
+### Socket REPL 
+A Socket REPL is automatically created on port 5555 (see `project.clj`). 
+You can connect to the running server via `telnet` or `nc`  and modify the code while the server is running.
+
+~~~bash
+nc localhost 5555
+user=> (in-ns 'clojure-web-server.web-server)
+#object[clojure.lang.Namespace 0x11980216 "clojure-web-server.web-server"]
+clojure-web-server.web-server=> (defn hello-world [_] "Good bye")
+~~~
+
+Now, if you query again the server you will get a modified response.
+
+~~~bash
+curl http://localhost:8087/hello
+hello
+~~~
+
+
 
 ## Run locally inside a REPL
 ~~~bash
