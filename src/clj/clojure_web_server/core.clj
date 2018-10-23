@@ -17,4 +17,3 @@
   (println "Hello, World!")
   (let [system (new-system config)]
     (component/start system)))
-

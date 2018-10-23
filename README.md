@@ -10,6 +10,9 @@ lein deps
 
 ## Run locally
 
+First you need to make sure that mongodb is installed locally.
+
+Then:
 ~~~bash
 lein run -m clojure-web-server.core
 ~~~
