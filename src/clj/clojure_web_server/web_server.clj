@@ -21,26 +21,20 @@
   (http-json-ok (users db)))
 
 (defn add-user! [{:keys [::db data]}]
-  (dbg "new")
-  (db/add-user! db (:username data) (:password data))
+  (db/add-user! db (:username (dbg data)))
   (http/ok "user added"))
-
-(defn count-users [{:keys [::db data]}]
-  (let [res (db/count-users db)]
-    (http-json-ok {numOfUsers res})))
 
 (defn api-routes []
   [[:any (parse/body-params)]
    [:get "hello" #'hello-world]
    [:get "users" #'get-users]
-   [:post "user" #'add-user!]
-   [:get "count-users" #'count-users]])
+   [:post "user" #'add-user!]])
+
 
 (defrecord WebServer [port mongo-db]
   component/Lifecycle
 
   (start [component]
-    (def mongo-db mongo-db)
     (println ";; starting WebServer on port [%d]" port)
     (let [routes (concat [[:any (fn [_] (ct/delegate {::db mongo-db}))]]
                          (api-routes))]
