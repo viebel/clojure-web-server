@@ -43,8 +43,6 @@ hello
 ~~~
 
 
-If you need more advanced stuff, you will have more fun by using a real Socket REPL client like [unravel](https://github.com/Unrepl/unravel) that provides code completion and more. 
-
 
 ## Run locally inside a REPL
 ~~~bash
