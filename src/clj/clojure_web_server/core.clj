@@ -16,5 +16,5 @@
   [& _]
   (println "Hello, World!")
   (let [system (new-system config)]
-    (component/start system)))
-
+    (let [system (component/start system)]
+      (println system))))
