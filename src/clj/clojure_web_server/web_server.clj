@@ -1,12 +1,11 @@
 (ns clojure-web-server.web-server
   (:require
-    [com.stuartsierra.component :as component]
-    [gadjett.core :refer [dbg]]
-    [catacumba.core :as ct]
-    [catacumba.http :as http]
-    [catacumba.handlers.parse :as parse]
-    [clojure-web-server.db :refer [users] :as db]
-    [cheshire.core :as json]))
+   [com.stuartsierra.component :as component]
+   [catacumba.core :as ct]
+   [catacumba.http :as http]
+   [catacumba.handlers.parse :as parse]
+   [clojure-web-server.db :refer [users] :as db]
+   [cheshire.core :as json]))
 
 
 (defn http-json-ok [data]
@@ -21,7 +20,7 @@
   (http-json-ok (users db)))
 
 (defn add-user! [{:keys [::db data]}]
-  (db/add-user! db (:username (dbg data)))
+  (db/add-user! db (:username data))
   (http/ok "user added"))
 
 (defn api-routes []

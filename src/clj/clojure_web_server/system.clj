@@ -1,9 +1,8 @@
 (ns clojure-web-server.system
   (:require
-    [com.stuartsierra.component :as component]
-    [gadjett.core :refer [dbg]]
-    [clojure-web-server.web-server :refer [new-web-server]]
-    [clojure-web-server.db         :refer [new-db]]))
+   [com.stuartsierra.component :as component]
+   [clojure-web-server.web-server :refer [new-web-server]]
+   [clojure-web-server.db         :refer [new-db]]))
 
 
 (def config
