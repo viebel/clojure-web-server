@@ -1,43 +1,15 @@
 (ns user
   (:require
-    [clojure.tools.namespace.repl :refer [refresh]]
-    [com.stuartsierra.component   :as component]
-    [clojure-web-server.system   :refer [new-system]]))
+   [com.stuartsierra.component.repl :refer [reset start stop system set-init]]
+   [clojure-web-server.system :refer [new-system]]))
 
-;; ===========================================================================
-;; REPL workflow
+(def config
+  {:web-server {:port 8088 }
+   :mongo      {:uri "mongodb://127.0.0.1:27017/clojure-web-server-dev"}})
 
-(def dev-config
-  {:web-server {:port 8086 }
-   :mongo {:uri "mongodb://127.0.0.1:27017/clojure-web-server"}})
+(defn dev-system
+  "Constructs a system map suitable for interactive development."
+  []
+  (new-system config))
 
-(def system nil)
-
-(defn init []
-  (alter-var-root
-   #'system
-   (constantly
-    (new-system dev-config))))
-
-(defn start []
-  (alter-var-root
-   #'system
-   component/start))
-
-(defn stop []
-  (alter-var-root
-   #'system
-   (fn [s]
-     (when s
-       (component/stop s)))))
-
-(defn go []
-  (init)
-  (start))
-
-(defn reset []
-  (stop)
-  (refresh :after 'user/go))
-
-
-
+(set-init (fn [_] (dev-system)))

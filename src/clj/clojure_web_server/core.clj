@@ -14,3 +14,6 @@
   (println "Hello, World!")
   (let [system (new-system config)]
     (component/start system)))
+
+(comment
+  (keys com.stuartsierra.component.repl/system))

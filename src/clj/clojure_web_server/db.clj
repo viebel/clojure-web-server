@@ -60,11 +60,17 @@
 
 
 (comment
-  (def db (-> (new-db {:uri "mongodb://localhost:27017/clojure-web-server"})
-              component/start))
+  (def db (new-db {:uri "mongodb://localhost:27017/clojure-web-server"}))
+  (component/start db)
   (users db)
+
+  (def db-started (component/start db))
   (add-user! db-started "Samantha Lopez")
   (users db-started)
+
+  (def db (:mongo-db com.stuartsierra.component.repl/system))
+  (add-user! db "Samantha Lopez")
+  (users db)
   )
 
 
