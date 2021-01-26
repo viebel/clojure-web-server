@@ -1,11 +1,10 @@
-(defproject clojure-web-server "0.1.0-SNAPSHOT"
-  :dependencies [[org.clojure/clojure            "1.9.0"]
-                 [org.clojure/tools.logging      "0.4.1"]
+(defproject clojure-web-server "0.1.0"
+  :dependencies [[org.clojure/clojure            "1.10.0"]
                  [com.stuartsierra/component     "0.3.2"]
+                 [com.stuartsierra/component.repl "0.2.0"]
                  [com.google.guava/guava "19.0"]
                  [com.novemberain/monger "3.1.0"]
-                 [funcool/catacumba "2.2.1"]
-                 [ch.qos.logback/logback-classic "1.2.3"]]
+                 [funcool/catacumba "2.2.2"]]
 
   :target-path "target/%s"
   :uberjar-name "clojure-web-server-standalone.jar"
@@ -16,7 +15,7 @@
                        :main         ^:skip-aot clojure-web-server.core
                        :dependencies [[org.clojure/tools.nrepl "0.2.13"]]}
              :dev     {:dependencies [[org.clojure/tools.namespace "0.3.0-alpha4"]]
-                       :jvm-opts     ["-Dclojure.server.repl={:port 5555 :accept clojure.core.server/repl}"] 
+                       :jvm-opts     ["-Dclojure.server.repl={:port 5555 :accept clojure.core.server/repl}"]
                        :source-paths ["dev"]}}
 
   :repl-options {:init-ns user

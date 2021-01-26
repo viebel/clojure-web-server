@@ -6,9 +6,8 @@
 
 
 (def config
-  {:web-server {:port 8089}
-   :mongo {:uri "mongodb://localhost:27017/foo"}})
-
+  {:web-server {:port 8876}
+   :mongo      {:uri "mongodb://localhost:27017/foo"}})
 
 (defn new-system [config]
   (component/system-map

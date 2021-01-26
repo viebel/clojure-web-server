@@ -12,7 +12,6 @@
   (-> (json/encode data)
       (http/ok {:content-type "application/json"})))
 
-
 (defn hello-world [req]
   (http/ok "hello"))
 
