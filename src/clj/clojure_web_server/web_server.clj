@@ -53,9 +53,9 @@
    [:mongo-db]))
 
 (comment
-  (def my-web-server (new-web-server {:port 3129}))
-  (def vvv (start my-web-server))
-  (stop vvv)
+  (def my-web-server (new-web-server {:port 3130}))
+  (def vvv (component/start my-web-server))
+  (component/stop vvv)
 
 
 
