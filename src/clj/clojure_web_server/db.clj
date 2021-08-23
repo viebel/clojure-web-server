@@ -28,7 +28,7 @@
 ;; ===========================================================================
 ;; component
 (comment
-  (def mongo (mg/connect-via-uri "mongodb://localhost:27017/clojure-web-server"))
+  (def mongo (mg/connect-via-uri "mongodb://localhost:27017/clojure-web-server-dev"))
   (json/encode (users mongo))
   (mc/insert (:db mongo) "foo" {:bb "asadsdadsds"})
   (mc/find-maps (:db mongo) "foo" {})
