@@ -49,7 +49,7 @@ If you need more advanced stuff, you will have more fun by using a real Socket R
 ## Run locally inside a REPL
 ~~~bash
 lein repl
-user => (go)
+user => (reset)
 ~~~
 
 When you want to restart the server (and automatically reload modified files)
