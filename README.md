@@ -38,7 +38,7 @@ clojure-web-server.web-server=> (defn hello-world [_] "Good bye")
 Now, if you query again the server you will get a modified response.
 
 ~~~bash
-curl http://localhost:8087/hello
+curl http://localhost:8088/hello
 hello
 ~~~
 
@@ -71,3 +71,8 @@ lein uberjar
 java -jar target/uberjar/clojure-web-server-standalone.jar
 ~~~
 
+## TODOS
+
+[] Integrate Reitit (maybe use another http server)
+[] Integrate malli to validate requests and responses
+[] Generate Swagger 
